@@ -90,11 +90,11 @@ Les traces des requêtes 1, 2 et 3 alternent entre `[calcul-service:8081]` et `[
 
 ### E.3 : routes `lb://`
 
-Après passage à `lb://CALCUL-SERVICE` et `lb://HISTORIQUE-SERVICE`, six envois de `GET /calcul/somme?a=2&b=3` sont répartis à tour de rôle entre les instances 8081 et 8083.
+Après passage à `lb://CALCUL-SERVICE` et `lb://HISTORIQUE-SERVICE`, les envois de `GET /calcul/somme?a=2&b=3` sont répartis à tour de rôle entre les instances 8081 et 8083.
 
 ### E.4 : routes statiques en Java
 
-Les mêmes six requêtes donnent les mêmes résultats avec le bean `RouteLocator`.
+Les mêmes requêtes donnent les mêmes résultats avec le bean `RouteLocator`.
 
 ### E.5 : routes dynamiques
 
@@ -130,7 +130,7 @@ Quand `historique-service` est arrêté, sa route disparaît de `/actuator/gatew
 
 ### Partie D
 
-**Question D.1.** Les six traces alternent entre `[calcul-service:8081]` et `[calcul-service:8083]`. [Complétez avec l'ordre observé, par exemple : 8081, 8083, 8081, 8083, 8081, 8083.] La règle est de prendre à chaque appel l'instance suivante de la liste, puis de recommencer au début. Cette stratégie s'appelle le tour de rôle (round robin).
+**Question D.1.** Les six traces alternent entre les deux instances : 8081, 8083, 8081, 8083, 8081, 8083. La règle est de prendre à chaque appel l'instance suivante de la liste, puis de recommencer au début. Cette stratégie s'appelle le tour de rôle (round robin).
 
 **Question D.2.** Avec `name = "CALCULSERVIC"`, j'obtiens un statut 503 avec le corps `{"erreur":"calcul-service injoignable"}`. La réponse est produite par le second bloc `catch` (`FeignException`) : le nom ne correspond à aucune instance de l'annuaire, donc LoadBalancer répond 503, qui n'est pas une erreur 400 (`FeignException.BadRequest`). Le bon nom a ensuite été remis.
 
